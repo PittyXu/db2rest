@@ -1,5 +1,7 @@
 package com.homihq.db2rest.jdbc.core.service;
 
+import com.homihq.db2rest.access.DbTableAccess;
+import com.homihq.db2rest.access.Operation;
 import com.homihq.db2rest.jdbc.core.DbOperationService;
 import com.homihq.db2rest.core.exception.GenericDataAccessException;
 
@@ -34,7 +36,8 @@ public class JdbcUpdateService implements UpdateService {
     @Transactional
     public int patch(String schemaName, String tableName, Map<String, Object> data, String filter) {
 
-        DbTable dbTable = jdbcSchemaCache.getTable(tableName);
+        DbTableAccess dbTableAccess = jdbcSchemaCache.getTable(tableName, Operation.UPDATE);
+        DbTable dbTable = dbTableAccess.dbTable();
 
 
         List<String> updatableColumns =

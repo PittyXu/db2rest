@@ -62,6 +62,9 @@ db2rest:
     enabled: ${MULTI_TENANCY_ENABLED:false}
     mode: ${MULTI_TENANCY_MODE:'NONE'}
 
+  access:
+    enabled: ${ACCESS_ENABLED:false}
+    tableName: ${ACCESS_TABLE_NAME:Access}
 
 d1:
   accountId: ${D1_ACCOUNT_ID}

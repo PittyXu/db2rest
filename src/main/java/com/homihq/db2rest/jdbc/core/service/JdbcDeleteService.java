@@ -1,5 +1,7 @@
 package com.homihq.db2rest.jdbc.core.service;
 
+import com.homihq.db2rest.access.DbTableAccess;
+import com.homihq.db2rest.access.Operation;
 import com.homihq.db2rest.core.config.Db2RestConfigProperties;
 import com.homihq.db2rest.jdbc.core.DbOperationService;
 import com.homihq.db2rest.core.exception.GenericDataAccessException;
@@ -32,15 +34,15 @@ public class JdbcDeleteService implements DeleteService {
     public int delete(String schemaName, String tableName, String filter) {
         db2RestConfigProperties.checkDeleteAllowed(filter);
 
-        DbTable dbTable = jdbcSchemaCache.getTable(tableName);
+        DbTableAccess dbTableAccess = jdbcSchemaCache.getTable(tableName, Operation.DELETE);
 
         DeleteContext context = DeleteContext.builder()
                 .tableName(tableName)
-                .table(dbTable).build();
+                .table(dbTableAccess.dbTable()).build();
 
 
 
-        return executeDelete(filter, dbTable, context);
+        return executeDelete(filter, dbTableAccess.dbTable(), context);
 
     }
 

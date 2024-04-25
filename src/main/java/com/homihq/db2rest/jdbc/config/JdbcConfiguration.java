@@ -63,9 +63,9 @@ public class JdbcConfiguration {
     }
 
     @Bean
-    public JdbcSchemaCache jdbcSchemaCache(DataSource dataSource, Db2RestConfigProperties db2RestConfigProperties) {
+    public JdbcSchemaCache jdbcSchemaCache(DataSource dataSource, Db2RestConfigProperties db2RestConfigProperties, JdbcTemplate jdbcTemplate) {
         log.info("JDBC Schema cache is being cached.");
-        return new JdbcSchemaCache(dataSource, db2RestConfigProperties);
+        return new JdbcSchemaCache(dataSource, db2RestConfigProperties, jdbcTemplate);
     }
 
     @Bean

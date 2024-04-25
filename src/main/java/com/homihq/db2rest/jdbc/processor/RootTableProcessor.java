@@ -1,6 +1,8 @@
 package com.homihq.db2rest.jdbc.processor;
 
 
+import com.homihq.db2rest.access.DbTableAccess;
+import com.homihq.db2rest.access.Operation;
 import com.homihq.db2rest.jdbc.JdbcSchemaCache;
 import com.homihq.db2rest.jdbc.rest.read.dto.ReadContext;
 import com.homihq.db2rest.jdbc.core.model.DbTable;
@@ -17,9 +19,9 @@ public class RootTableProcessor implements ReadProcessor {
     @Override
     public void process(ReadContext readContext) {
         log.debug("Processing root table");
-        DbTable table =
-                jdbcSchemaCache.getTable(readContext.getTableName());
+        DbTableAccess table =
+                jdbcSchemaCache.getTable(readContext.getTableName(), Operation.READ);
 
-        readContext.setRoot(table);
+        readContext.setRoot(table.dbTable());
     }
 }

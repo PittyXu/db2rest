@@ -1,5 +1,7 @@
 package com.homihq.db2rest.jdbc.rest.schema;
 
+import com.homihq.db2rest.access.DbTableAccess;
+import com.homihq.db2rest.access.Operation;
 import com.homihq.db2rest.core.exception.GenericDataAccessException;
 import com.homihq.db2rest.jdbc.JdbcSchemaCache;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +27,14 @@ public class SchemaController implements SchemaRestApi{
 
         if(Objects.isNull(schemaFilter)) {
 
-            return jdbcSchemaCache.getTables().stream()
+            return jdbcSchemaCache.getTables(Operation.SCHEMA).stream()
+                    .map(DbTableAccess::dbTable)
                     .map(t -> new TableObject(t.schema(), t.name(), t.type())).toList();
         }
         else{
             log.info("schemaFilter - {}", schemaFilter);
-            return jdbcSchemaCache.getTables().stream()
+            return jdbcSchemaCache.getTables(Operation.SCHEMA).stream()
+                    .map(DbTableAccess::dbTable)
                     .filter(dbTable -> {
 
                        if(StringUtils.equals(schemaFilter.field, "schema")

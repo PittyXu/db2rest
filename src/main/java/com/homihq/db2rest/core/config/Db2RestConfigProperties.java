@@ -29,6 +29,8 @@ public class Db2RestConfigProperties {
 
     private DateTimeConfigProperties dateTime;
 
+    private AccessConfigProperties access;
+
     public boolean isAllSchema() {
 
         if(Objects.isNull(includeSchemas)) {

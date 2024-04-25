@@ -1,5 +1,7 @@
 package com.homihq.db2rest.jdbc.core.service;
 
+import com.homihq.db2rest.access.DbTableAccess;
+import com.homihq.db2rest.access.Operation;
 import com.homihq.db2rest.jdbc.core.DbOperationService;
 import com.homihq.db2rest.core.exception.GenericDataAccessException;
 import com.homihq.db2rest.jdbc.core.model.DbColumn;
@@ -45,7 +47,8 @@ public class JdbcBulkCreateService implements BulkCreateService {
         try {
 
             //1. get actual table
-            DbTable dbTable = jdbcSchemaCache.getTable(tableName);
+            DbTableAccess dbTableAccess = jdbcSchemaCache.getTable(tableName, Operation.BULK);
+            DbTable dbTable = dbTableAccess.dbTable();
 
             //2. determine the columns to be included in insert statement
             List<String> insertableColumns = isEmpty(includedColumns) ? new ArrayList<>(dataList.get(0).keySet().stream().toList()) :

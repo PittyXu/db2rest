@@ -1,5 +1,7 @@
 package com.homihq.db2rest.jdbc.processor;
 
+import com.homihq.db2rest.access.DbTableAccess;
+import com.homihq.db2rest.access.Operation;
 import com.homihq.db2rest.jdbc.core.model.DbColumn;
 import com.homihq.db2rest.jdbc.core.model.DbJoin;
 import com.homihq.db2rest.jdbc.core.model.DbTable;
@@ -46,7 +48,8 @@ public class JoinProcessor implements ReadProcessor {
             rootTable = reviewRootTable(allJoinTables, joinDetail, rootTable);
 
             String tableName = joinDetail.table();
-            DbTable table = jdbcSchemaCache.getTable(tableName);
+            DbTableAccess dbTableAccess = jdbcSchemaCache.getTable(tableName, Operation.READ);
+            DbTable table = dbTableAccess.dbTable();
             table = table.copyWithAlias(getAlias(tableName));
             List<DbColumn> columnList = addColumns(table, joinDetail.fields());
             readContext.addColumns(columnList);
@@ -70,7 +73,7 @@ public class JoinProcessor implements ReadProcessor {
                     .findFirst();
 
             //look in cache
-            return newRoot.orElseGet(() -> jdbcSchemaCache.getTable(withTable));
+            return newRoot.orElseGet(() -> jdbcSchemaCache.getTable(withTable, Operation.READ).dbTable());
         }
 
         return rootTable;
